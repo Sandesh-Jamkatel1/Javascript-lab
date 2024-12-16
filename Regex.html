@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Music Mixer</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+        input[type="range"] {
+            width: 100px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            button {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced Music Mixer</h1>
+
+        <!-- Background Music Section -->
+        <div class="section">
+            <h2>Import Background Music</h2>
+            <input type="file" id="bg-music" accept="audio/*">
+            <div class="controls">
+                <button id="play-bg">Play Background</button>
+                <button id="pause-bg">Pause</button>
+                <button id="stop-bg">Stop</button>
+                <label for="bg-volume">Volume</label>
+                <input type="range" id="bg-volume" min="0" max="1" step="0.01" value="0.5">
+                <label for="bg-loop">Loop</label>
+                <input type="checkbox" id="bg-loop">
+            </div>
+        </div>
+
+        <!-- Voice Recording Section -->
+        <div class="section">
+            <h2>Record Your Voice</h2>
+            <button id="record-voice">Record</button>
+            <button id="stop-recording" disabled>Stop Recording</button>
+            <div class="controls">
+                <button id="split-recording" disabled>Split Recording</button>
+                <label for="voice-volume">Volume</label>
+                <input type="range" id="voice-volume" min="0" max="1" step="0.01" value="1">
+            </div>
+            <audio id="recorded-voice" controls></audio>
+        </div>
+
+        <!-- Audio Refinement Tools -->
+        <div class="section">
+            <h2>Audio Refinement</h2>
+            <label for="noise-reduction">Noise Reduction</label>
+            <input type="range" id="noise-reduction" min="0" max="1" step="0.1" value="0">
+            <label for="auto-tune">Auto-Tune</label>
+            <input type="checkbox" id="auto-tune">
+        </div>
+
+        <!-- Mixing Section -->
+        <div class="section">
+            <h2>Mix and Download</h2>
+            <button id="mix-sound">Mix Sound</button>
+            <button id="download-mix" disabled>Download Mix (MP3)</button>
+        </div>
+
+        <audio id="mixed-sound" controls></audio>
+    </div>
+
+    <script>
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let bgAudio = new Audio();
+        let recordedAudio = document.getElementById('recorded-voice');
+        let mixedAudio = document.getElementById('mixed-sound');
+        let mediaRecorder, recordedChunks = [], audioBlob = null;
+        let gainNode = audioContext.createGain();
+        let noiseReductionNode = audioContext.createBiquadFilter();
+        let autoTuneEnabled = false;
+
+        // Background Music Controls
+        document.getElementById('bg-music').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const bgMusic = URL.createObjectURL(file);
+                bgAudio.src = bgMusic;
+            }
+        });
+
+        document.getElementById('play-bg').addEventListener('click', () => bgAudio.play());
+        document.getElementById('pause-bg').addEventListener('click', () => bgAudio.pause());
+        document.getElementById('stop-bg').addEventListener('click', () => {
+            bgAudio.pause();
+            bgAudio.currentTime = 0;
+        });
+        document.getElementById('bg-volume').addEventListener('input', (e) => {
+            gainNode.gain.value = e.target.value;
+        });
+
+        // Voice Recording Controls
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = event => recordedChunks.push(event.data);
+            mediaRecorder.onstop = () => {
+                audioBlob = new Blob(recordedChunks, { type: 'audio/mp3' });
+                recordedAudio.src = URL.createObjectURL(audioBlob);
+                document.getElementById('split-recording').disabled = false;
+            };
+        });
+
+        document.getElementById('record-voice').addEventListener('click', () => {
+            recordedChunks = [];
+            mediaRecorder.start();
+            document.getElementById('stop-recording').disabled = false;
+        });
+
+        document.getElementById('stop-recording').addEventListener('click', () => {
+            mediaRecorder.stop();
+            document.getElementById('stop-recording').disabled = true;
+        });
+
+        // Noise Reduction and Auto-Tune Controls
+        document.getElementById('noise-reduction').addEventListener('input', function() {
+            noiseReductionNode.frequency.value = this.value * 1000;
+        });
+        document.getElementById('auto-tune').addEventListener('change', function() {
+            autoTuneEnabled = this.checked;
+        });
+
+        // Mix and Download
+        document.getElementById('mix-sound').addEventListener('click', async function() {
+            if (!bgAudio.src || !audioBlob) {
+                alert("Please upload background music and record your voice first!");
+                return;
+            }
+            const bgBuffer = await fetchAudioBuffer(audioContext, bgAudio.src);
+            const voiceBuffer = await audioContext.decodeAudioData(await audioBlob.arrayBuffer());
+            const mixedBuffer = mixAudio(bgBuffer, voiceBuffer);
+            mixedAudio.src = URL.createObjectURL(bufferToMP3(mixedBuffer));
+            document.getElementById('download-mix').disabled = false;
+        });
+
+        document.getElementById('download-mix').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.href = mixedAudio.src;
+            link.download = 'mixed_audio.mp3';
+            link.click();
+        });
+
+        function fetchAudioBuffer(context, url) {
+            return fetch(url)
+                .then(response => response.arrayBuffer())
+                .then(data => context.decodeAudioData(data));
+        }
+
+        function mixAudio(bgBuffer, voiceBuffer) {
+            const mixBuffer = audioContext.createBuffer(
+                2, Math.min(bgBuffer.length, voiceBuffer.length), audioContext.sampleRate
+            );
+            for (let i = 0; i < mixBuffer.length; i++) {
+                for (let channel = 0; channel < mixBuffer.numberOfChannels; channel++) {
+                    let bgSound = bgBuffer.getChannelData(channel)[i] * 0.4;
+                    let voiceSound = voiceBuffer.getChannelData(channel)[i];
+                    mixBuffer.getChannelData(channel)[i] = (autoTuneEnabled ? tune(voiceSound) : voiceSound) + bgSound;
+                }
+            }
+            return mixBuffer;
+        }
+
+        function tune(input) {
+            return Math.sin(input);  // Simple autotune example
+        }
+
+        function bufferToMP3(buffer) {
+            // Conversion to MP3 format
+            // This needs to be handled by a library (e.g., lamejs)
+            return new Blob([buffer], { type: 'audio/mp3' });
+        }
+    </script>
+</body>
+</html>

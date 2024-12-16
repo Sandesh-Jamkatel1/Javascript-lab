@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkSheet-Using Js</title>
+    <style>
+        .container{
+            width: 420px;
+            height: 300px;
+            border:2px solid;
+            margin: auto;
+            padding: 20px;
+            font-size: 20px;
+        }
+        .marksheet-container{
+            display: block;
+        }
+        input{
+            width: 220px;
+            height: 24px;
+            outline: none;
+            font-size: large;
+        }
+        button{
+            padding: 4px 10px;
+            font-weight: 550;
+        }
+        #displayMarkSheet{
+            margin-left: 500px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Write a program that takes the marks of
+    5 subjects calculates the grade and displays the grade sheet. -->
+    <div class="container">
+        <label for="subject1" class="marksheet-container">Subject1:</label>
+        <input type="number" name="subject1" id="subject1">
+        <label for="subject2" class="marksheet-container">Subject2:</label>
+        <input type="number" name="subject2" id="subject2">
+        <label for="subject3" class="marksheet-container">Subject3:</label>
+        <input type="number" name="subject3" id="subject3">
+        <label for="subject4" class="marksheet-container">Subject4:</label>
+        <input type="number" name="subject4" id="subject4">
+        <label for="subject5" class="marksheet-container">Subject5:</label>
+        <input type="number" name="subject5" id="subject5">
+        <br><br>
+        <button onclick="GradeSheet()">Get Marksheet</button>
+    </div>
+    <div id="displayMarkSheet">
+
+    </div>
+    <script src="third.js"></script>
+    
+</body>
+</html>

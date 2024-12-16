@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhutan Cultural Tour</title>
+<style>
+    /* Basic reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    /* Header */
+    .header {
+        background-color: #0044cc;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 1.2em;
+    }
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 0.9em;
+        padding: 10px 20px;
+        color: #555;
+    }
+    /* Main section */
+    .container {
+        display: flex;
+        padding: 20px;
+    }
+    .content {
+        flex: 3;
+        background: white;
+        padding: 20px;
+        margin-right: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar {
+        flex: 1;
+    }
+    /* Title and rating */
+    .title {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    .rating {
+        color: gold;
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+    /* Tabs */
+    .tabs {
+        display: flex;
+        margin-bottom: 20px;
+    }
+    .tab {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        background: #333;
+        color: white;
+        margin-right: 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .tab:last-child {
+        margin-right: 0;
+    }
+    /* Inquiry and Book buttons */
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .button {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .button.book {
+        background-color: #007bff;
+    }
+    /* Sidebar */
+    .sidebar-section {
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-section h3 {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+        font-size: 1.2em;
+        border-radius: 5px;
+    }
+    .quick-inquiry form {
+        display: flex;
+        flex-direction: column;
+    }
+    .quick-inquiry input, .quick-inquiry textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    Bhutan Cultural Tour
+</div>
+
+<div class="breadcrumb">
+    Home / Bhutan Cultural Tour
+</div>
+
+<div class="container">
+    <!-- Main Content -->
+    <div class="content">
+        <div class="title">Bhutan Cultural Tour</div>
+        <div class="rating">★★★★★</div>
+        
+        <div class="tabs">
+            <div class="tab">OVERVIEW</div>
+            <div class="tab">ITINERARY</div>
+            <div class="tab">INCLUDE/EXCLUDE</div>
+            <div class="tab">BOOK</div>
+            <div class="tab">WRITE A REVIEW</div>
+        </div>
+        
+        <div class="button-group">
+            <a href="#" class="button">Inquiry Now</a>
+            <a href="#" class="button book">Book Now</a>
+        </div>
+
+        <h2>Overview</h2>
+        <p>Bhutan Cultural Tour is the best way to understand the culturally and traditionally rich dragon kingdom. Nepal Hiking Himalaya takes you to the wonderful architecturally iconic and traditional aesthetic cities and monasteries of Bhutan during this tour. Experience the magnificent tiny Himalayan dragon kingdom Bhutan with us.</p>
+        <p>South Asia is the region of the world full of rich culture and numerous wonders of nature. The multi-cultural people and the unique geographical terrains from flatland to Himalayas make this region best for the wilderness diversified holiday fun. Bhutan Cultural Tour presents the best exploration of the Bhutanese culture, people, Himalayas, and ancient history of this tiny South Asian Himalayan kingdom.</p>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-section">
+            <h3>Trip Facts</h3>
+            <p>No details available.</p>
+        </div>
+        <div class="sidebar-section quick-inquiry">
+            <h3>Quick Inquiry</h3>
+            <form action="#">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email">
+                <input type="tel" placeholder="Contact Number">
+                <textarea placeholder="Message"></textarea>
+                <button type="submit" class="button book">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

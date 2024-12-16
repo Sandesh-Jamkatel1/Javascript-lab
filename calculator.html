@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        .container{
+            width: 500px;
+            height: 500px;
+            margin: auto; 
+        }
+        .calculatorFormat{
+            display: block;
+            font-size: larger;
+        }
+        #num1,#num2{
+            width: 200px;
+            height: 20px;
+        }
+        button{
+            padding: 5px 15px;
+        }
+        #display-result{
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+    <!-- Write a program to make a simple calculator.
+    [design should be your own similar to window calculator]  -->
+    <div class="container">
+        <h2>Simple Arithemetic Calculator</h2>
+        <label for="num1" class="calculatorFormat">Enter First Number:</label>
+        <input type="number" name="num1" id="num1">
+        <label for="num2" class="calculatorFormat">Enter Second Number:</label>
+        <input type="number" name="num2" id="num2">
+        <br><br>
+        <button onclick="calculator('+')">+</button>
+        <button onclick="calculator('-')">-</button>
+        <button onclick="calculator('*')">x</button>
+        <button onclick="calculator('/')">&div;</button>
+        <button onclick="calculator('%')">%</button>
+    </div>
+    <div id="display-result"></div>
+    <script src="second.js"></script>
+</body>
+</html>
